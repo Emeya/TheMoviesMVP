@@ -88,17 +88,9 @@
 				9954CFD5251523CB00AE8DE1 /* Models */,
 				9954CFD6251523D000AE8DE1 /* Presenter */,
 				9954CFC22515237400AE8DE1 /* Views */,
-				994EE64B2513C9F900AA456F /* StoryBoard */,
 				994EE6422513C9EC00AA456F /* LaunchScreen.storyboard */,
 			);
 			path = TheMoviesMVP;
-			sourceTree = "<group>";
-		};
-		994EE64B2513C9F900AA456F /* StoryBoard */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = StoryBoard;
 			sourceTree = "<group>";
 		};
 		9954CFC22515237400AE8DE1 /* Views */ = {
