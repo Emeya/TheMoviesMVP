@@ -18,11 +18,10 @@ protocol MovieListDelegate: NSObjectProtocol {
 }
 
 class MovieListPresenter {
-    
+                            
     private weak var view: MovieListDelegate!
-    private var results : [Results] = []
+    private var movieResult : [MovieResult] = []
     private var posterImages = [UIImage]()
-    let posterUrl = "https://image.tmdb.org/t/p/w342"
     
     var fetchingDataAlert : UIAlertController?
     
@@ -32,14 +31,28 @@ class MovieListPresenter {
     
     func bind(){
         self.view.configureView()
-        self.getMoviesData()
+        self.fetchMoviesData()
     }
     
     func unbind() {
         self.view = nil
     }
     
-    //MARK: Takes a few second to load the data, please be patient.
+    //MARK: Nueva funcion
+    func fetchMoviesData(){
+        Movie.fetchMovies { (result) in
+            switch result {
+            case .success(let movies):
+                self.movieResult = movies.results!
+                self.getMoviePoster()
+            case.failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    //MARK: Funcion antigua.
+    /*
     func getMoviesData(){
         guard let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=634b49e294bd1ff87914e7b9d014daed&language=es-ES&page=1") else {return}
         AF.request(url, method: .get, parameters: nil, encoding: URLEncoding.default).responseJSON { (response) in
@@ -48,8 +61,8 @@ class MovieListPresenter {
                 guard let DataResponse = response.data else {return}
                 do {
                     let decoder = JSONDecoder()
-                    let data = try decoder.decode(MoviesJson.self, from: DataResponse)
-                    self.results = data.results!
+                    let data = try decoder.decode(Movie.self, from: DataResponse)
+                    self.movieResult = data.results!
                     self.getMoviePoster()
                 } catch {
                     print("OOPS , An Error Occured: \(error)")
@@ -59,11 +72,13 @@ class MovieListPresenter {
             }
         }
     }//movies
+ */
     
+    //MARK: Trae el poster de la pelicula (es la manera correcta de hacer esto?)
     func getMoviePoster(){
         posterImages.removeAll()
-        for item in results {
-            guard let url = URL(string: posterUrl + item.poster_path!  ) else { return }
+        for item in movieResult {
+            guard let url = URL(string: K.EndPoints.MovieServer.moviePosterPath + item.poster_path!  ) else { return }
             do {
                 let imgData = try Data(contentsOf: url)
                 posterImages.append(UIImage(data: imgData)!)
@@ -73,44 +88,22 @@ class MovieListPresenter {
             }
         }
         DispatchQueue.main.async {
-//            self.fetchingDataAlert?.dismiss(animated: true, completion: {
-                //                self.collectionView.reloadData()
             self.view.displayMovies()
-//            })
         }
         
     }//get posters
     
     
     func getRows()->Int{
-        return self.results.count
+        return self.movieResult.count
     }
     
-    func getResults(index: Int)-> Results{
-        return self.results[index]
+    func getResults(index: Int)-> MovieResult{
+        return self.movieResult[index]
     }
     
     func getPosterImage(index: Int)-> UIImage{
         return self.posterImages[index]
     }
     
-    
-    
-//    func showConnectionErrorAlert(){
-//        DispatchQueue.main.async {
-//            self.fetchingDataAlert?.dismiss(animated: true, completion: {
-//                let alert = UIAlertController(title: "Error", message: "Revisa tu conexion a internet", preferredStyle: .alert)
-//                alert.addAction(UIAlertAction(title: "Reintentar Conexion?", style: .default, handler: { (_) in
-////                    self.getMoviesData()
-//                }))
-//
-//                alert.addAction(UIAlertAction(title: "Cancelar", style: .default, handler: { (_) in
-//                    alert.dismiss(animated: true)
-//                }))
-//                self.fetchingDataAlert!.present(alert, animated: true)
-//            })
-//        }
-//    }
-//
-
 }//end

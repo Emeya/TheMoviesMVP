@@ -25,6 +25,7 @@ class MoviesListView: UIViewController{
         return cv
     }()
     
+    
     let moviesListCellID = "MoviesListCellID"
     var numberItems: CGFloat = 2
     

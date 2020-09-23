@@ -126,7 +126,7 @@ class MoviesListCell: UICollectionViewCell {
     
     //MARK: - Setting values
     
-    var movieResults: Results? {
+    var movieResults: MovieResult? {
         didSet {
             guard let movieData = movieResults else { return }
             movieTitle.text = movieData.title
@@ -135,7 +135,7 @@ class MoviesListCell: UICollectionViewCell {
         }
     }//didset
     
-    func configureView(movieResults : Results){
+    func configureView(movieResults : MovieResult){
         let movieData = movieResults
         movieTitle.text = movieData.title
         dateLabel.text = movieData.release_date

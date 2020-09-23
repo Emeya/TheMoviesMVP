@@ -1,5 +1,5 @@
 //
-//  MoviesAPI.swift
+//  Movie.swift
 //  TheMoviesDB
 //
 //  Created by Manuel Soberanis on 19/08/20.
@@ -8,11 +8,12 @@
 
 import Foundation
 
-struct MoviesJson: Decodable {
-    let results : [Results]?
+//MARK: Es la manera correcta de organizar esto?
+struct Movie: Decodable {
+    let results : [MovieResult]?
 }
 
-struct Results : Decodable {
+struct MovieResult : Decodable {
     let id : Int?
     let title : String?
     let poster_path : String?

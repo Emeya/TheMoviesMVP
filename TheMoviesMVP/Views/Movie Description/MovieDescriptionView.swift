@@ -35,7 +35,7 @@ class MovieDescriptionView: UIViewController {
         super.viewDidLoad()
         presenter = MovieDescriptionPresenter(view: self)
         presenter.bind()
-        presenter.getMovieDetails(idMovie: idMovie)
+        presenter.getMovieDetails(idMovie: idMovie!)
         configureView()
     }
     
